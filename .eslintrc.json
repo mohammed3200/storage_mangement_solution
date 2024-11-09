@@ -1,3 +1,9 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "next/core-web-vitals",               // Extends ESLint rules for Next.js with a focus on web vitals
+    "next/typescript",                     // Includes TypeScript rules for Next.js
+    "standard",                            // Uses the Standard JavaScript style guide
+    "plugin:tailwindcss/recommended",     // Applies recommended rules for Tailwind CSS
+    "prettier"                             // Integrates Prettier for code formatting
+  ]
 }
