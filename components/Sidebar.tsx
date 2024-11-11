@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { avatarPlaceholderUrl, navItems } from "@/constants";
+import { navItems } from "@/constants";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +14,7 @@ interface Props {
 
 const Sidebar = ({ fullName, avatar, email }: Props) => {
   const pathname = usePathname();
-  // console.log(avatar);
+
   return (
     <aside className="sidebar">
       <Link href="/">
@@ -23,17 +22,19 @@ const Sidebar = ({ fullName, avatar, email }: Props) => {
           src="/assets/icons/logo-full-brand.svg"
           alt="logo"
           width={160}
-          height={160}
+          height={50}
           className="hidden h-auto lg:block"
         />
+
         <Image
           src="/assets/icons/logo-brand.svg"
           alt="logo"
-          width={160}
-          height={160}
-          className="block h-auto lg:hidden"
+          width={52}
+          height={52}
+          className="lg:hidden"
         />
       </Link>
+
       <nav className="sidebar-nav">
         <ul className="flex flex-1 flex-col gap-6">
           {navItems.map(({ url, name, icon }) => (
@@ -60,17 +61,19 @@ const Sidebar = ({ fullName, avatar, email }: Props) => {
           ))}
         </ul>
       </nav>
+
       <Image
         src="/assets/images/files-2.png"
-        alt="file"
+        alt="logo"
         width={506}
         height={418}
         className="w-full"
       />
+
       <div className="sidebar-user-info">
         <Image
-          src={avatarPlaceholderUrl}
-          alt="Avatar Placeholder"
+          src={avatar}
+          alt="Avatar"
           width={44}
           height={44}
           className="sidebar-user-avatar"
@@ -83,5 +86,4 @@ const Sidebar = ({ fullName, avatar, email }: Props) => {
     </aside>
   );
 };
-
 export default Sidebar;
