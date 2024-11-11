@@ -25,7 +25,7 @@ interface Props {
   fullName: string;
   avatar: string;
   email: string;
-  ownerId: string;
+  $id: string;
   accountId: string;
 }
 
@@ -33,7 +33,7 @@ const MobileNavigation = ({
   fullName,
   avatar,
   email,
-  ownerId,
+  $id: ownerId,
   accountId,
 }: Props) => {
   const [open, setOpen] = useState(false);
@@ -100,7 +100,7 @@ const MobileNavigation = ({
           </nav>
           <Separator className="my-5 bg-light-200/20" />
           <div className="flex flex-col justify-between gap-5 pb-5">
-            <FileUploader />
+            <FileUploader ownerId={ownerId} accountId={accountId} />
             <Button
               type="submit"
               className="mobile-sign-out-button"
