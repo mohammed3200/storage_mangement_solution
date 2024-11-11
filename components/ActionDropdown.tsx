@@ -8,7 +8,6 @@ import { Models } from "node-appwrite";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -25,8 +24,8 @@ import { actionsDropdownItems } from "@/constants";
 import { constructDownloadUrl } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { renameFile } from "@/lib/actions/file.actions";
-import { FileDetails } from "@/components/ActionsModalContent";
+import { renameFile, updateFileUsers } from "@/lib/actions/file.actions";
+import { FileDetails, ShareInput } from "@/components/ActionsModalContent";
 
 const ActionDropdown = ({ file }: { file: Models.Document }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,6 +33,7 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
   const [action, setAction] = useState<ActionType | null>(null);
   const [name, setName] = useState(file.name);
   const [isLoading, setIsLoading] = useState(false);
+  const [emails, setEmails] = useState<string[]>([]);
   const path = usePathname();
 
   const closeAllModals = () => {
@@ -41,7 +41,20 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
     setIsDropdownOpen(false);
     setAction(null);
     setName(file.name);
-    // setEmail([]);
+    setEmails([]);
+  };
+
+  const handleRemoverUser = async (email: string) => {
+    const updatedEmails = emails.filter((e) => e !== email);
+
+    const success = await updateFileUsers({
+      fileId: file.$id,
+      emails: updatedEmails,
+      path,
+    });
+
+    if (success) setEmails(updatedEmails);
+    // closeAllModals();
   };
 
   const handleAction = async () => {
@@ -56,7 +69,12 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
           extension: file.extension,
           path,
         }),
-      share: () => console.log("Share"),
+      share: () =>
+        updateFileUsers({
+          fileId: file.$id,
+          emails,
+          path,
+        }),
       delete: () => console.log("Delete"),
     };
 
@@ -84,6 +102,13 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
             />
           )}
           {value === "details" && <FileDetails file={file} />}
+          {value === "share" && (
+            <ShareInput
+              file={file}
+              onInputChange={setEmails}
+              onRemove={handleRemoverUser}
+            />
+          )}
         </DialogHeader>
         {["rename", "delete", "share"].includes(value) && (
           <DialogFooter className="flex flex-col gap-3 md:flex-row">
