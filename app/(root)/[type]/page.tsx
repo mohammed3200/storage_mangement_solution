@@ -28,6 +28,9 @@ const Page = async ({ searchParams, params }: SearchParamProps) => {
         <div className="total-size-section">
           <p className="body-1">
             Total: <span className="h5">{convertFileSize(totalSize)}</span>
+            <p className="body-1">
+              file(s): <span className="h5">{files.total}</span>
+            </p>
           </p>
 
           <div className="sort-container">
