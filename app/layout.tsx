@@ -1,30 +1,30 @@
-import type { Metadata } from "next";
-import {Poppins} from "next/font/google";
-import "./globals.css";
+import React from "react";
+import Sidebar from "@/components/Sidebar";
+import MobileNavigation from "@/components/MobileNavigation";
+import Header from "@/components/Header";
+import { getCurrentUser } from "@/lib/actions/user.actions";
+import { redirect } from "next/navigation";
+import { Toaster } from "@/components/ui/toaster";
 
-const poppins = Poppins({
-    subsets:['latin'],
-    weight: ['100','200','300','400','500','600','700','800','900'],
-    variable: '--font-poppins',
-})
+export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "StoreIt",
-  description: "StoreIt - The only storage solution you need.",
-};
+const Layout = async ({ children }: { children: React.ReactNode }) => {
+  const currentUser = await getCurrentUser();
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  if (!currentUser) return redirect("/sign-in");
+
   return (
-    <html lang="en">
-      <body
-        className={`${poppins.variable} font-poppins antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <main className="flex h-screen">
+      <Sidebar {...currentUser} />
+
+      <section className="flex h-full flex-1 flex-col">
+        <MobileNavigation {...currentUser} />
+        <Header userId={currentUser.$id} accountId={currentUser.accountId} />
+        <div className="main-content">{children}</div>
+      </section>
+
+      <Toaster />
+    </main>
   );
-}
+};
+export default Layout;
