@@ -1,30 +1,29 @@
-import React from "react";
-import Sidebar from "@/components/Sidebar";
-import MobileNavigation from "@/components/MobileNavigation";
-import Header from "@/components/Header";
-import { getCurrentUser } from "@/lib/actions/user.actions";
-import { redirect } from "next/navigation";
-import { Toaster } from "@/components/ui/toaster";
+import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
 
-export const dynamic = "force-dynamic";
+import "./globals.css";
 
-const Layout = async ({ children }: { children: React.ReactNode }) => {
-  const currentUser = await getCurrentUser();
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-poppins",
+});
 
-  if (!currentUser) return redirect("/sign-in");
-
-  return (
-    <main className="flex h-screen">
-      <Sidebar {...currentUser} />
-
-      <section className="flex h-full flex-1 flex-col">
-        <MobileNavigation {...currentUser} />
-        <Header userId={currentUser.$id} accountId={currentUser.accountId} />
-        <div className="main-content">{children}</div>
-      </section>
-
-      <Toaster />
-    </main>
-  );
+export const metadata: Metadata = {
+  title: "StoreIt",
+  description: "StoreIt - The only storage solution you need.",
 };
-export default Layout;
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={`${poppins.variable} font-poppins antialiased`}>
+        {children}
+      </body>
+    </html>
+  );
+}
