@@ -233,3 +233,34 @@ export async function getTotalSpaceUsed() {
     handleError(error, "Error calculating total space used:, ");
   }
 }
+
+// ===========================Size for Files
+export const getTotalSizeByType = async (Type: string) => {
+  const { databases } = await createSessionClient();
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) throw new Error("User is not authenticated.");
+
+  try {
+    // Retrieve files owned by the current user
+    const files = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesCollectionId,
+      [Query.equal("owner", [currentUser.$id])],
+    );
+
+    // Initialize total size
+    let totalSize = 0;
+
+    // Sum the sizes of files that match the specified type
+    files.documents.forEach((file) => {
+      if (file.type === (Type as FileType)) {
+        totalSize += file.size;
+      }
+    });
+
+    return parseStringify({ totalSize });
+  } catch (error) {
+    handleError(error, "Error calculating total size by type");
+  }
+};
