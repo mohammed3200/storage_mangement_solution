@@ -5,6 +5,7 @@ import { FileType } from "next/dist/lib/file-exists";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
 export const parseStringify = (value: unknown) =>
   JSON.parse(JSON.stringify(value));
 
@@ -63,7 +64,16 @@ export const getFileType = (fileName: string) => {
     "afphoto",
     "afphoto",
   ];
-  const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp"];
+  const imageExtensions = [
+    "jpg",
+    "jpeg",
+    "jfif",
+    "png",
+    "gif",
+    "bmp",
+    "svg",
+    "webp",
+  ];
   const videoExtensions = ["mp4", "avi", "mov", "mkv", "webm"];
   const audioExtensions = ["mp3", "wav", "ogg", "flac"];
 

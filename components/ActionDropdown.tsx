@@ -106,7 +106,7 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
           {value === "rename" && (
             <Input
               type="text"
-              value={name}
+              value={name.split(".")[0]}
               onChange={(e) => setName(e.target.value)}
             />
           )}

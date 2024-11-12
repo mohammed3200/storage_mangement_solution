@@ -134,3 +134,5 @@ export const signInUser = async ({ email }: { email: string }) => {
     handleError(error, "Failed to sign in user");
   }
 };
+
+export const GetAllUser = async () => {};
